@@ -1,0 +1,64 @@
+﻿@using Microsoft.AspNetCore.Identity
+@using JustBlog.Application.Services.CategoryServices
+@using JustBlog.Model.Entities
+
+@inject SignInManager<AppUser> signInManager
+@inject UserManager<AppUser> userManager
+@inject ICategoryService categoryService
+@{
+    var categories = categoryService.GetAll();
+}
+<nav class="navbar navbar-expand-lg navbar-light" id="mainNav">
+    <div class="container px-4 px-lg-5">
+        <a class="navbar-brand" asp-controller="Home" asp-action="Index">Just Blog</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+            Menu
+            <i class="fas fa-bars"></i>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarResponsive">
+            <ul class="navbar-nav ms-auto py-4 py-lg-0">
+                <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" asp-controller="Home" asp-action="Index">Home</a></li>
+                <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" asp-controller="Home" asp-action="About">About</a></li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link px-lg-3 py-3 py-lg-4 dropdown-toggle" href="#" id="navbarDarkDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        Danh mục bài viết
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDarkDropdownMenuLink">
+                        @foreach (var category in categories)
+                        {
+                            <li><a class="dropdown-item" asp-controller="Category" asp-action="CategoryDetail" asp-route-id="@category.Id">@category.Name</a></li>
+                        }
+                    </ul>
+                </li>
+
+                @{
+                    if (signInManager.IsSignedIn(User))
+                    {
+                        <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" asp-controller="Account" asp-action="Logout">Logout</a></li>
+                        <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" asp-controller="Account" asp-action="Register">Register</a></li>
+                        <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="/admin/home">Admin Manager</a></li>
+                        <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="#" style="pointer-events: none; cursor: default;">Wellcome, @userManager.GetUserName(User)</a></li>
+                    }
+                    else
+                    {
+                        <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" asp-controller="Account" asp-action="Login">Login</a></li>
+                        <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" asp-controller="Account" asp-action="Register">Register</a></li>
+                    }
+                }
+            </ul>
+        </div>
+    </div>
+</nav>
+<!-- Page Header-->
+<header class="masthead" style="background-image: url('/img/home-bg.jpg') ">
+    <div class="container position-relative px-4 px-lg-5">
+        <div class="row gx-4 gx-lg-5 justify-content-center">
+            <div class="col-md-10 col-lg-8 col-xl-7">
+                <div class="site-heading">
+                    <h1>Just Blog</h1>
+                    <span class="subheading">@TempData["TitlePage"]</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>

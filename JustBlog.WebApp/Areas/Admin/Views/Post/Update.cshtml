@@ -1,0 +1,62 @@
+﻿@using JustBlog.ViewModel.Posts
+@using JustBlog.Application.Services.CategoryServices
+@using JustBlog.Application.Services.TagServices
+@inject ICategoryService categoryService
+@inject ITagService tagService
+@model UpdatePostVm
+@{
+    var categories = categoryService.GetAll();
+    var tags = tagService.FindTagsByPostId(Model.Id);
+    var tagNames = string.Join(';', tags.Select(t => t.Name));
+}
+
+<form asp-area="Admin" asp-controller="Post" asp-action="Update" method="POST">
+    <h3>Update bài viết</h3>
+    @if (TempData["Message"] != null)
+    {
+        <div class="alert alert-danger fade show" role="alert">@TempData["Message"]</div>
+    }
+    <div asp-validation-summary="ModelOnly"></div>
+    <div class="mb-3">
+        <label asp-for="Title" class="form-label"></label>
+        <input type="text" class="form-control" asp-for="Title" onkeyup="ChangeUrl('Title','UrlSlug')">
+        <span asp-validation-for="Title" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="UrlSlug" class="form-label"></label>
+        <input type="text" class="form-control" asp-for="UrlSlug" readonly>
+        <span asp-validation-for="UrlSlug" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label asp-for="ShortDescription" class="form-label"></label>
+        <textarea type="text" class="form-control" asp-for="ShortDescription"></textarea>
+        <span asp-validation-for="ShortDescription" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label asp-for="CategoryId" class="form-label"></label>
+        <select class="form-control" asp-for="CategoryId">
+            @foreach (var item in categories)
+            {
+                if (item.Id == Model.CategoryId)
+                {
+                    <option value="@item.Id" selected>@item.Name</option>
+                }
+                else
+                {
+                    <option value="@item.Id">@item.Name</option>
+                }
+            }
+        </select>
+    </div>
+    <div class="mb-3">
+        <label asp-for="Tags" class="form-label"></label>
+        <input type="text" class="form-control" asp-for="Tags" value="@tagNames">
+        <span asp-validation-for="Tags" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <textarea asp-for="PostContent" id="editor"></textarea>
+        <span asp-validation-for="PostContent" class="text-danger"></span>
+    </div>
+    <button type="submit" class="btn btn-primary">Submit</button>
+</form>

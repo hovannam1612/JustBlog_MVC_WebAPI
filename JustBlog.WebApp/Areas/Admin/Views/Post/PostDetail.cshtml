@@ -1,0 +1,46 @@
+﻿@using JustBlog.ViewModel.Posts
+@using JustBlog.Application.Services.TagServices
+@inject ITagService tagService
+@model PostViewModel
+
+@{
+    TempData["TitlePage"] = "Detail page";
+}
+<h2>Post Detail</h2>
+<br />
+<div class="row justify-content-center">
+    <div class="col-md-12 col-lg-12 col-xl-12">
+
+        <!-- Post preview-->
+        <div class="card">
+            <div class="card-header">
+                <h4>
+                    @Model.Title
+                </h4>
+                <p class="post-meta small">
+                    Posted @Model.CreatedOn with  @Model.ViewCount view(s)
+                </p>
+            </div>
+
+            <div class="card-body">
+
+                @{
+                    var tags = tagService.FindTagsByPostId(Model.Id);
+                }
+                <b>Tag:</b>
+                @foreach (var tagItem in tags)
+                {
+                    <a asp-action="DetailPostTag" asp-controller="Post" asp-route-id="@tagItem.Id" class="btn btn-primary btn-sm text-white">@tagItem.Name</a>
+                }
+                <p><b>Short Description:</b> @Model.ShortDescription</p>
+            </div>
+            <div class="card-footer">
+                <b>Content: </b>
+                <p>@Html.Raw(Model.PostContent)</p>
+            </div>
+        </div>
+        <br />
+        <a href="/admin/post/index" class="btn btn-primary">List of Posts</a>
+
+    </div>
+</div>

@@ -1,0 +1,150 @@
+﻿@using JustBlog.ViewModel.Posts
+@using JustBlog.ViewModel.BaseEntity
+@using JustBlog.Common.Constraints
+
+@model PagingVm<PostViewModel>
+
+@{
+    string keyword = "";
+    string searchBy = ViewBag.SearchBy;
+    string orderBy = ViewBag.OrderBy;
+    string typeOfSoft = ViewBag.TypeOfSoft;
+
+    if (ViewBag.Keyword != null)
+        keyword = ViewBag.Keyword as string;
+}
+@if (TempData["Message"] != null)
+{
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        @TempData["Message"]
+    </div>
+}
+
+<div class="card">
+    <div class="card-header">
+        <form asp-area="Admin" asp-controller="Post" asp-action="Index" method="GET">
+            <div class="input-group mb-3">
+                <input type="text" class="form-control" value="@keyword" name="keyword" placeholder="Search ...">
+                <select class="form-control" name="searchBy">
+                    @if (searchBy == Searching.Title)
+                    {
+                        <option value="@Searching.Title" selected> Find By Title</option>
+                        <option value="@Searching.Content"> Find By Content</option>
+                    }
+                    else
+                    {
+                        <option value="@Searching.Title"> Find By Title</option>
+                        <option value="@Searching.Content" selected> Find By Content</option>
+                    }
+                </select>
+                <select class="form-control" name="orderBy">
+                    @if (orderBy == @Searching.Title)
+                    {
+                        <option value="@Searching.Title" selected> Order By Title</option>
+                        <option value="@Searching.Content"> Order By Content</option>
+                    }
+                    else
+                    {
+                        <option value="@Searching.Title"> Order By Title</option>
+                        <option value="@Searching.Content" selected> Order By Content</option>
+                    }
+                </select>
+                <select class="form-control" name="typeOfSoft">
+                    @if (typeOfSoft == @Sorting.ASC)
+                    {
+                        <option value="@Sorting.ASC" selected>Tăng dần</option>
+                        <option value="@Sorting.DESC">Giảm dần</option>
+                    }
+                    else
+                    {
+                        <option value="@Sorting.ASC">Tăng dần</option>
+                        <option value="@Sorting.DESC" selected>Giảm dần</option>
+                    }
+                </select>
+                <button type="submit" class="btn btn-success">Search</button>
+            </div>
+        </form>
+    </div>
+    <div class="card-body">
+        <table class="table table-bordered table-hover">
+            <thead class="thead-dark">
+                <tr>
+                    <th>Id</th>
+                    <th>Title</th>
+                    <th>Created On</th>
+                    <th>Update On</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var post in Model.Data)
+                {
+                <tr>
+                    <td>@post.Id</td>
+                    <td>@post.Title</td>
+                    <td>@post.CreatedOn</td>
+                    <td>@post.UpdatedOn</td>
+                    <td>
+                        <form method="get">
+                            <div class="btn-group">
+                                <button type="submit" class="btn btn-sm btn-danger ml-1" asp-action="Delete" asp-route-id="@post.Id"
+                                        onclick="return confirm('Bạn có muốn xóa bài viết này không?');">Delete</button>
+                                <button type="submit" class="btn btn-sm btn-success ml-1" asp-action="Update" asp-route-id="@post.Id">Update</button>
+                                <button type="submit" class="btn btn-sm btn-primary ml-1" asp-action="PostDetail" asp-route-id="@post.Id">View Detail</button>
+
+                                @if (post.IsDeleted)
+                                {
+                                    <button type="submit" class="btn btn-sm btn-warning ml-1" asp-action="PublicPost" asp-route-id="@post.Id">Public</button>
+                                }
+                                else
+                                {
+                                    <button type="submit" class="btn btn-sm btn-danger ml-1" asp-action="PublicPost" asp-route-id="@post.Id">UnPublic</button>
+                                }
+
+                            </div>
+                        </form>
+                    </td>
+                </tr>
+                }
+            </tbody>
+
+            <tfoot class="flex-column justify-content-center">
+                <tr>
+                    <td colspan="5">
+                        <nav aria-label="Page navigation example">
+                            <ul class="pagination">
+                                @{ string url = "#";
+                                    if (Model.PageIndex > 1)
+                                    {
+                                        url = $"/admin/post/index?keyword={keyword}&searchBy={searchBy}&pageIndex={Model.PageIndex - 1}&typeOfSoft={typeOfSoft}";
+                                    }
+                                }
+                                <li class="page-item">
+                                    <a class="page-link" href="@url" aria-label="Previous">
+                                        <span aria-hidden="true">&laquo;</span>
+                                    </a>
+                                </li>
+                                @for (int i = 1; i <= Model.TotalPage; i++)
+                                {
+                                    url = $"/admin/post/index?keyword={keyword}&searchBy={searchBy}&pageIndex={i}&typeOfSoft={typeOfSoft}";
+                                    var active = Model.PageIndex == i ? "active" : "";
+                                    <li class="page-item @active"><a class="page-link" href="@url">@i</a></li>
+                                }
+                                <li class="page-item">
+                                    @{ if (Model.PageIndex < Model.TotalPage)
+                                        {
+                                            url = $"/admin/post/index?keyword={keyword}&searchBy={searchBy}&pageIndex={Model.PageIndex + 1}&typeOfSoft={typeOfSoft}";
+                                        }
+                                    }
+                                    <a class="page-link" href="@url" aria-label="Next">
+                                        <span aria-hidden="true">&raquo;</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </nav>
+                    </td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+</div>

@@ -1,0 +1,32 @@
+﻿@using JustBlog.ViewModel.Categories
+@using JustBlog.Application.Services.CategoryServices
+@inject ICategoryService categoryService
+@model UpdateCategoryVm
+
+
+<form asp-area="Admin" asp-controller="Category" asp-action="Update" method="POST">
+    <h3>Update Category</h3>
+    @if (TempData["Message"] != null)
+    {
+        <div class="alert alert-danger fade show" role="alert">@TempData["Message"]</div>
+    }
+    <div asp-validation-summary="ModelOnly"></div>
+    <div class="mb-3">
+        <label asp-for="Name" class="form-label"></label>
+        <input type="text" class="form-control" asp-for="Name" onkeyup="ChangeUrl('Name','UrlSlug')">
+        <span asp-validation-for="Name" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="UrlSlug" class="form-label"></label>
+        <input type="text" class="form-control" asp-for="UrlSlug" readonly>
+        <span asp-validation-for="UrlSlug" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label asp-for="Description" class="form-label"></label>
+        <textarea type="text" class="form-control" asp-for="Description"></textarea>
+        <span asp-validation-for="Description" class="text-danger"></span>
+    </div>
+   
+    <button type="submit" class="btn btn-primary">Submit</button>
+</form>

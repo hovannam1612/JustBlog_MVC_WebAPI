@@ -1,0 +1,57 @@
+﻿@using JustBlog.ViewModel.Accounts
+@using JustBlog.Common.Constants
+@model CreateUserVm
+@if (TempData["RegisterSuccess"] != null)
+{
+    <div class="alert alert-success fade show" role="alert">@TempData["RegisterSuccess"]</div>
+}
+@if (TempData["RegisterFail"] != null)
+{
+    <div class="alert alert-danger fade show" role="alert">@TempData["RegisterFail"]</div>
+}
+<div class="container mt-5">
+    <div class="row justify-content-center align-items-center">
+        <div class="col-sm-8 col-md-8 col-lg-8">
+            <h1 class="mb-2">Register</h1>
+            <form asp-controller="Account" asp-action="Register" method="post">
+                <div asp-validation-summary="ModelOnly"></div>
+                <div class="form-group">
+                    <label asp-for="FullName"></label>
+                    <input type="text" class="form-control" asp-for="FullName" placeholder="Enter full name">
+                    <span asp-validation-for="FullName" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="UserName"></label>
+                    <input type="text" class="form-control" asp-for="UserName" placeholder="Enter user name">
+                    <span asp-validation-for="UserName" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Email"></label>
+                    <input type="email" class="form-control" asp-for="Email" placeholder="Enter email">
+                    <span asp-validation-for="Email" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Password"></label>
+                    <input type="password" class="form-control" asp-for="Password" placeholder="Enter password">
+                    <span asp-validation-for="Password" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="ComfirmPassword"></label>
+                    <input type="password" class="form-control" asp-for="ComfirmPassword" placeholder="Enter confirm passwrod">
+                    <span asp-validation-for="ComfirmPassword" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="RoleName"></label>
+                    <select asp-for="RoleName" class="form-control">
+                        <option value="">Select user role</option>
+                        <option value="@UserRole.BlogOwner">Blog Owner</option>
+                        <option value="@UserRole.User">User</option>
+                        <option value="@UserRole.Contributor">Contributor</option>
+                    </select>
+                    <span asp-validation-for="RoleName" class="text-danger"></span>
+                </div>
+                <button type="submit" class="btn btn-primary">Register</button>
+            </form>
+        </div>
+    </div>
+</div>

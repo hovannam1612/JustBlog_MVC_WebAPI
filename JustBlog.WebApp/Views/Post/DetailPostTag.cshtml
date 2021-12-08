@@ -1,0 +1,45 @@
+﻿@using JustBlog.ViewModel.Posts
+@using JustBlog.Application.Services.TagServices
+@inject ITagService tagService
+@model IEnumerable<PostViewModel>
+
+@{
+    var tag = tagService.FindById(ViewBag.TagId);
+}
+
+<h5>List of Post - @tag.Name</h5>
+<br />
+<div class="row justify-content-center" style="font-size: 15px">
+    <div class="col-md-10 col-lg-8 col-xl-7">
+        @foreach (var item in Model)
+        {
+
+            <!-- Post preview-->
+            <div class="card">
+                <div class="card-header">
+                    <a asp-action="PostDetail" asp-controller="Post" asp-route-id="@item.Id" class="h6">
+                        @item.Title
+                    </a>
+                </div>
+
+                <div class="card-body">
+                    <p class="post-meta small">
+                        Posted on @item.CreatedOn.ToLongDateString() with  @item.ViewCount view(s)
+                    </p>
+                    @{
+                        var tags = tagService.FindTagsByPostId(item.Id);
+                    }
+                    Tag:
+                    @foreach (var tagItem in tags)
+                    {
+                        <a asp-action="DetailPostTag" asp-controller="Post" asp-route-id="@tagItem.Id" class="btn btn-primary btn-sm text-white">@tagItem.Name</a>
+                    }
+                </div>
+                <div class="card-footer">
+                    <p>@Html.Raw(item.PostContent)</p>
+                </div>
+            </div>
+            <br />
+        }
+    </div>
+</div>

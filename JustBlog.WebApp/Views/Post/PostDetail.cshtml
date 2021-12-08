@@ -1,0 +1,102 @@
+﻿@using JustBlog.ViewModel.Posts
+@using JustBlog.Application.Services.TagServices
+@using Microsoft.AspNetCore.Identity
+@using JustBlog.Model.Entities
+@using JustBlog.Application.Services.Comments
+
+@inject ITagService tagService
+@inject SignInManager<AppUser> signInManager
+@inject UserManager<AppUser> userManager
+@inject ICommentService commentService
+@model PostViewModel
+
+@{
+    TempData["TitlePage"] = "Detail page";
+    var comments = commentService.GetByPostId(Model.Id);
+    var totalComments = comments.Count();
+}
+<h5>Post Detail</h5>
+<br />
+<div class="row justify-content-center" style="font-size: 15px">
+    <div class="col-md-10 col-lg-8 col-xl-7">
+
+        <!-- Post preview-->
+        <div class="card">
+            <div class="card-header">
+                <a asp-action="PostDetail" asp-controller="Post" asp-route-id="@Model.Id" class="h6">
+                    @Model.Title
+                </a>
+            </div>
+
+            <div class="card-body">
+                <p class="post-meta small">
+                    Posted on @Model.CreatedOn.ToLongDateString() with  @Model.ViewCount view(s)
+                </p>
+                @{
+                    var tags = tagService.FindTagsByPostId(Model.Id);
+                }
+                Tag:
+                @foreach (var tagItem in tags)
+                {
+                    <a asp-action="DetailPostTag" asp-controller="Post" asp-route-id="@tagItem.Id" class="btn btn-primary btn-sm text-white">@tagItem.Name</a>
+                }
+            </div>
+            <div class="card-footer">
+                <p>@Html.Raw(Model.PostContent)</p>
+            </div>
+        </div>
+        <br />
+        <!-- Comment-->
+        <div class="row d-flex justify-content-center">
+            <div class="col-md-12">
+                <div class="headings d-flex justify-content-between align-items-center mb-3">
+                    <h5>Comments(@totalComments)</h5>
+                </div>
+                @foreach (var item in comments)
+                {
+
+                    <div class="card p-3 mb-2">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div class="user d-flex flex-row align-items-center">
+                                @if (item.Name.ToLower().Equals("anonymous"))
+                                {
+                                    <img src="https://cdn2.iconfinder.com/data/icons/social-flat-buttons-3/512/anonymous-512.png" width="30" class="user-img rounded-circle mr-2">
+                                }
+                                else
+                                {
+                                    <img src="https://i.imgur.com/hczKIze.jpg" width="30" class="user-img rounded-circle mr-2">
+                                }
+                                <span>
+                                    <small class="font-weight-bold text-primary">@item.Name</small>
+                                    <small class="font-weight-bold">@item.CommentText</small>
+                                </span>
+                            </div>
+                            <small>@item.CreatedOn</small>
+                        </div>
+                        <div class="action d-flex justify-content-between mt-2 align-items-center">
+                            <div class="reply px-4"> <small>Remove</small> <span class="dots"></span> <small>Reply</small> <span class="dots"></span> <small>Translate</small> </div>
+                        </div>
+                    </div>
+                }
+
+                <br />
+                <form asp-controller="Comment" asp-action="CommentPost" method="post">
+                    <div class="input-group input-group-sm">
+                        <input type="text" hidden class="form-control" name="postId" value="@Model.Id">
+                        @if (signInManager.IsSignedIn(User))
+                        {
+                            <input type="text" hidden class="form-control" name="name" value="@userManager.GetUserName(User)">
+                        }
+                        else
+                        {
+                            <input type="text" hidden class="form-control" name="name" value="Anonymous">
+                        }
+
+                        <input type="text" class="form-control" name="commentText" placeholder="Type your message here.." aria-describedby="sizing-addon3">
+                        <button id="sendMessageButton" class="btn btn-primary" type="submit">Send</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

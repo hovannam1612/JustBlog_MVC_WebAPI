@@ -1,0 +1,15 @@
+D:\FSoft\EF\JustBlogMVC\JustBlog.ViewModel\bin\Debug\net5.0\JustBlog.ViewModel.deps.json
+D:\FSoft\EF\JustBlogMVC\JustBlog.ViewModel\bin\Debug\net5.0\JustBlog.ViewModel.dll
+D:\FSoft\EF\JustBlogMVC\JustBlog.ViewModel\bin\Debug\net5.0\ref\JustBlog.ViewModel.dll
+D:\FSoft\EF\JustBlogMVC\JustBlog.ViewModel\bin\Debug\net5.0\JustBlog.ViewModel.pdb
+D:\FSoft\EF\JustBlogMVC\JustBlog.ViewModel\bin\Debug\net5.0\JustBlog.Model.dll
+D:\FSoft\EF\JustBlogMVC\JustBlog.ViewModel\bin\Debug\net5.0\JustBlog.Model.pdb
+D:\FSoft\EF\JustBlogMVC\JustBlog.ViewModel\obj\Debug\net5.0\JustBlog.ViewModel.csproj.AssemblyReference.cache
+D:\FSoft\EF\JustBlogMVC\JustBlog.ViewModel\obj\Debug\net5.0\JustBlog.ViewModel.GeneratedMSBuildEditorConfig.editorconfig
+D:\FSoft\EF\JustBlogMVC\JustBlog.ViewModel\obj\Debug\net5.0\JustBlog.ViewModel.AssemblyInfoInputs.cache
+D:\FSoft\EF\JustBlogMVC\JustBlog.ViewModel\obj\Debug\net5.0\JustBlog.ViewModel.AssemblyInfo.cs
+D:\FSoft\EF\JustBlogMVC\JustBlog.ViewModel\obj\Debug\net5.0\JustBlog.ViewModel.csproj.CoreCompileInputs.cache
+D:\FSoft\EF\JustBlogMVC\JustBlog.ViewModel\obj\Debug\net5.0\JustBlog.ViewModel.csproj.CopyComplete
+D:\FSoft\EF\JustBlogMVC\JustBlog.ViewModel\obj\Debug\net5.0\JustBlog.ViewModel.dll
+D:\FSoft\EF\JustBlogMVC\JustBlog.ViewModel\obj\Debug\net5.0\ref\JustBlog.ViewModel.dll
+D:\FSoft\EF\JustBlogMVC\JustBlog.ViewModel\obj\Debug\net5.0\JustBlog.ViewModel.pdb
